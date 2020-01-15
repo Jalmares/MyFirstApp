@@ -18,7 +18,7 @@ const ListItem = (props) => {
                     flex: 1,
                     maxHeight: 60,
                 }}
-                source={{uri: mediaURL + item.filename}}
+                source={{uri: mediaURL + item.thumbnails.w160}}
 
             />
             <View style={{
