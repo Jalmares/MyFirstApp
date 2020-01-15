@@ -2,6 +2,8 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const mediaURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
+
 const ListItem = (props) => {
     console.log('list item props', props);
 
@@ -14,13 +16,15 @@ const ListItem = (props) => {
                     width: 100,
                     height: null,
                     flex: 1,
+                    maxHeight: 60,
                 }}
-                source={{uri: item.thumbnails.w160}}
+                source={{uri: mediaURL + item.filename}}
 
             />
             <View style={{
                 flex: 1,
                 marginLeft: 5,
+                maxHeight: 60,
             }}>
                 <Text style={{fontSize: 20, fontWeight: "bold"}}>{props.singleMedia.title}</Text>
                 <Text style={{fontSize: 13}}>{props.singleMedia.description}</Text>
