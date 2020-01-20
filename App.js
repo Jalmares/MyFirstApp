@@ -1,16 +1,36 @@
 import React from 'react';
-import {View, } from 'react-native';
+import {View, Image, StyleSheet, Dimensions, Text} from 'react-native';
 import List from './components/List';
 import {MediaProvider} from "./contexts/MediaContext";
 
 const App = () => {
     return (
-        <MediaProvider>
-          <View>
+        <View>
+              <Image
+                  style={main.picture}
+                  source={require("./img/sloth.jpg")}/>
+            <Text style={main.imgText}>Lazy Sloth</Text>
+            <MediaProvider>
             <List/>
-          </View>
         </MediaProvider>
+        </View>
     );
 };
+
+const main = StyleSheet.create({
+   picture: {
+       width: Dimensions.get("window").width * 1,
+       height: Dimensions.get("window").height * 0.4,
+       marginBottom: 5,
+   },
+    imgText: {
+       position: "absolute",
+        fontSize: 25,
+        left: 10,
+        top: 80,
+        backgroundColor: "#8b8b8b",
+    }
+
+});
 
 export default App;
