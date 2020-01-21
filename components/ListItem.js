@@ -1,6 +1,7 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
+import Single from "../views/Single";
 
 const mediaURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
@@ -10,7 +11,11 @@ const ListItem = (props) => {
     const item = props.singleMedia;
 
     return (
-        <TouchableOpacity style={styles.background}>
+        <TouchableOpacity style={styles.background} onPress={() =>
+            {props.navigation.push('Single',
+                {title: item.title,
+                description: item.description,
+                filename: item.thumbnails.w160})}}>
             <Image
                 style={{
                     width: 180,
@@ -26,6 +31,7 @@ const ListItem = (props) => {
                 flex: 1,
                 marginLeft: 5,
             }}>
+
                 <Text style={{fontSize: 20, fontWeight: "bold", color: "orange"}}>{props.singleMedia.title}</Text>
                 <Text style={{fontSize: 13}}>{props.singleMedia.description}</Text>
             </View>
