@@ -1,40 +1,33 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {Text, Image, Dimensions, View} from 'react-native';
+import {Body, Container, Left, Icon} from 'native-base';
 
 const mediaURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
 const Single = (props) => {
-    const { navigation } = props;
+    const {navigation} = props;
     console.log(navigation.getParam('filename', 'no picture'));
     return (
-        <View style={styles.container}>
-            <Text style={{fontSize: 20, fontWeight: "bold", color: "orange"}}>
-                {navigation.getParam('title', 'no title')}
-            </Text>
-
-            <Text style={{fontSize: 20}}>
-                {navigation.getParam('description', 'no description')}
-            </Text>
-
+        <Container style={{padding: 15, paddingTop: 30,}}>
+            <Body>
             <Image style={{
-                flex: 1,
-                width: '100%',
-                height: null,
+                width: Dimensions.get("window").width * 0.9,
+                height: Dimensions.get("window").height * 0.4,
             }}
                    source={{uri: mediaURL + navigation.getParam('filename', 'no picture')}}/>
 
-        </View>
+                <Text style={{fontSize: 20, fontWeight: "bold", color: "orange", paddingTop: 30,}}>
+                    {navigation.getParam('title', 'no title')}
+                </Text>
+
+                <Text style={{fontSize: 20}}>
+                    {navigation.getParam('description', 'no description')}
+                </Text>
+
+            </Body>
+        </Container>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 40,
-    },
-});
 
 export default Single;

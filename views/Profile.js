@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Button, AsyncStorage} from 'react-native';
+import {AsyncStorage} from 'react-native';
 import PropTypes from 'prop-types';
+import {Body, Button, Label, Container, Icon, Left, Content, Card, CardItem, Text} from 'native-base';
+
+const mediaURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
 const Profile = (props) => {
     const [user, setUser] = useState({});
     const userToState = async () => {
-      const userFromStorage = await AsyncStorage.getItem('user');
-      setUser(JSON.parse(userFromStorage));
+        const userFromStorage = await AsyncStorage.getItem('user');
+        setUser(JSON.parse(userFromStorage));
     };
 
     useEffect(() => {
@@ -18,25 +21,33 @@ const Profile = (props) => {
         props.navigation.navigate('Auth');
     };
     return (
-        <View style={styles.container}>
-            <Text>Profile</Text>
-            <Text>Username: {user.username}</Text>
-            <Text>Fullname: {user.full_name}</Text>
-            <Text>Email: {user.email}</Text>
-            <Button title="Logout!" onPress={signOutAsync} />
-        </View>
+        <Container style={{padding: 20}}>
+            <Content>
+                <Card>
+                    <CardItem header bordered>
+                        <Left>
+                            <Icon name={"person"} size={25}/>
+                            <Body>
+                                <Text>Username: {user.username}</Text>
+                            </Body>
+                        </Left>
+                    </CardItem>
+                    <CardItem cardBody>
+
+                    </CardItem>
+                    <Text>Fullname: {user.full_name}</Text>
+                    <Text style={{paddingBottom: 15}}>Email: {user.email}</Text>
+                    <Button onPress={signOutAsync}>
+                        <Body>
+                            <Label style={{color: "white"}}>Logout</Label>
+                        </Body>
+                    </Button>
+                </Card>
+            </Content>
+        </Container>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 40,
-    },
-});
 
 Profile.propTypes = {
     navigation: PropTypes.object,
