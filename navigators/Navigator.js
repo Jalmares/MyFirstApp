@@ -1,13 +1,12 @@
 import React from 'react';
-import { createBottomTabNavigator } from "react-navigation-tabs";
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
-import { createSwitchNavigator } from "react-navigation";
-import AuthLoading from "../views/AuthLoading";
-import Login from "../views/Login";
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {createStackNavigator} from 'react-navigation-stack';
 import Home from '../views/Home';
-import Profile from "../views/Profile";
-import Single from "../views/Single";
+import Profile from '../views/Profile';
+import Single from '../views/Single';
+import AuthLoading from '../views/AuthLoading';
+import Login from '../views/Login';
 import {Icon} from 'native-base';
 
 const TabNavigator = createBottomTabNavigator(
@@ -33,11 +32,25 @@ const TabNavigator = createBottomTabNavigator(
                 />;
             },
         }),
-    }
+        tabBarOptions: {
+            activeTintColor: '#000',
+        },
+    },
 );
 
+TabNavigator.navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state.routes[navigation.state.index];
+
+    // You can do whatever you like here to pick the title based on the route name
+    const headerTitle = routeName;
+
+    return {
+        headerTitle,
+    };
+};
 
 const StackNavigator = createStackNavigator(
+    // RouteConfigs
     {
         Home: {
             screen: TabNavigator,
@@ -62,7 +75,7 @@ const Navigator = createSwitchNavigator(
     },
     {
         initialRouteName: 'AuthLoading',
-    }
+    },
 );
 
 export default createAppContainer(Navigator);
