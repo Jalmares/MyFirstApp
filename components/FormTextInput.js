@@ -1,11 +1,11 @@
 import React from 'react';
-import {Input, Content, Badge, Item, Text} from 'native-base';
+import {Input, Body, Badge, Item, Text} from 'native-base';
 import PropTypes from 'prop-types';
 
 const FormTextInput = (props) => {
     const {error, ...otherProps} = props;
     return (
-        <Content>
+        <Body>
             <Item>
                 <Input
                     {...otherProps}
@@ -14,7 +14,7 @@ const FormTextInput = (props) => {
             {error &&
             <Badge><Text>{error}</Text></Badge>
             }
-        </Content>
+        </Body>
     );
 };
 
