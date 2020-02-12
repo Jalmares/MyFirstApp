@@ -14,10 +14,10 @@ import PropTypes from 'prop-types';
 import {fetchGET} from '../hooks/APIHooks';
 import AsyncImage from '../components/AsyncImage';
 import {Dimensions} from 'react-native';
+import {mediaURL} from '../constants/urlConst';
 
 const deviceHeight = Dimensions.get('window').height;
 
-const mediaURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
 const Profile = (props) => {
     const [user, setUser] = useState({

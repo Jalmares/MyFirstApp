@@ -13,12 +13,12 @@ import {
 import PropTypes from 'prop-types';
 import AsyncImage from '../components/AsyncImage';
 import {Dimensions} from 'react-native';
+import {mediaURL} from '../constants/urlConst';
 
 const deviceHeight = Dimensions.get('window').height;
 
 console.log('dh', deviceHeight);
 
-const mediaURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
 const Single = (props) => {
     const {navigation} = props;

@@ -1,41 +1,7 @@
 import {useState} from 'react';
 import validate from 'validate.js';
 import {fetchGET} from './APIHooks';
-
-const constraints = {
-    username: {
-        presence: {
-            message: 'cannot be blank.',
-        },
-        length: {
-            minimum: 3,
-            message: 'must be at least 3 characters',
-        },
-    },
-    email: {
-        presence: {
-            message: 'cannot be blank.',
-        },
-        email: {
-            message: 'not valid.',
-        },
-    },
-    fullname: {
-        presence: 'cannot be blank.',
-    },
-    password: {
-        length: {
-            minimum: 5,
-            message: 'must be at least 5 characters',
-        },
-    },
-    confirmPassword: {
-        presence: 'cannot be blank.',
-        equality: {
-            attribute: 'password',
-        },
-    },
-};
+import {registerConstraints} from '../constants/validationConst';
 
 const useSignUpForm = () => {
     const [inputs, setInputs] = useState({});
@@ -80,8 +46,9 @@ const useSignUpForm = () => {
     };
 
     const validateField = (attr) => {
+        // eslint-disable-next-line max-len
         const attrName = Object.keys(attr).pop(); // get the only or last item from array
-        const valResult = validate(attr, constraints);
+        const valResult = validate(attr, registerConstraints);
         console.log('valresult', valResult);
         let valid = undefined;
         if (valResult[attrName]) {
@@ -124,15 +91,11 @@ const useSignUpForm = () => {
             validateField(value);
         }
 
-        if (errors.username !== undefined ||
-            errors.email !== undefined ||
-            errors.full_name !== undefined ||
-            errors.password !== undefined ||
-            errors.confirmPassword !== undefined) {
-            return false;
-        } else {
-            return true;
-        }
+        return errors.username === undefined ||
+            errors.email === undefined ||
+            errors.full_name === undefined ||
+            errors.password === undefined ||
+            errors.confirmPassword === undefined;
     };
 
     return {

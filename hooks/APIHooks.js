@@ -1,6 +1,5 @@
-import {useState, useEffect} from 'react';
+import {apiUrl} from '../constants/urlConst';
 
-const apiUrl = 'http://media.mw.metropolia.fi/wbma/';
 
 const fetchGET = async (endpoint = '', params = '', token = '') => {
     const fetchOptions = {
@@ -37,26 +36,33 @@ const fetchPOST = async (endpoint = '', data = {}, token = '') => {
     return json;
 };
 
-
-const getAllMedia = () => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const fetchMedia = async () => {
-        try {
-            const json = await fetchGET('media/all');
-            const result = await Promise.all(json.files.map(async (item) => {
-                return await fetchGET('media', item.file_id);
-            }));
-            setData(result);
-            setLoading(false);
-        } catch (e) {
-            console.log('getAllMedia error', e.message);
-        }
+const fetchFormData = async (
+    endpoint = '', data = new FormData(), token = '') => {
+    const fetchOptions = {
+        method: 'POST',
+        headers: {
+            'x-access-token': token,
+        },
+        body: data,
     };
-    useEffect(() => {
-        fetchMedia();
-    }, []);
-    return [data, loading];
+    const response = await fetch(apiUrl + endpoint, fetchOptions);
+    const json = await response.json();
+    console.log(json);
+    if (response.status === 400 || response.status === 401) {
+        const message = Object.values(json).join();
+        throw new Error(message);
+    } else if (response.status > 299) {
+        throw new Error('fetchPOST error: ' + response.status);
+    }
+    return json;
 };
 
-export {getAllMedia, fetchGET, fetchPOST};
+const getAllMedia = async () => {
+    const json = await fetchGET('media/all');
+    const result = await Promise.all(json.files.map(async (item) => {
+        return await fetchGET('media', item.file_id);
+    }));
+    return result;
+};
+
+export {getAllMedia, fetchGET, fetchPOST, fetchFormData};
