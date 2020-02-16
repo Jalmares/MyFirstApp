@@ -89,6 +89,17 @@ const Profile = (props) => {
                             </Button>
                         </Body>
                     </CardItem>
+                    <CardItem>
+                        <Body>
+                            <Button full onPress={
+                                () => {
+                                    props.navigation.push('MyFiles', {file: props.singleMedia});
+                                }
+                            }>
+                                <Text>MyFiles</Text>
+                            </Button>
+                        </Body>
+                    </CardItem>
                 </Card>
             </Content>
         </Container>

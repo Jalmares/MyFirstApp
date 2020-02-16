@@ -1,20 +1,28 @@
-/* eslint-disable max-len */
 import React, {useContext, useEffect, useState} from 'react';
 import {
     List as BaseList, Spinner, View,
 } from 'native-base';
 import ListItem from './ListItem';
 import {MediaContext} from '../contexts/MediaContext';
-import {getAllMedia} from '../hooks/APIHooks';
+import {getAllMedia, getUserMedia} from '../hooks/APIHooks';
 import PropTypes from 'prop-types';
+import {AsyncStorage} from "react-native";
+import { NavigationEvents } from 'react-navigation';
+
 
 const List = (props) => {
     const [media, setMedia] = useContext(MediaContext);
     const [loading, setLoading] = useState(true);
 
-    const getMedia = async () => {
+    const getMedia = async (mode) => {
         try {
-            const data = await getAllMedia();
+            let data = [];
+            if (mode === 'all') {
+            data = await getAllMedia();
+        } else {
+                const token = await AsyncStorage.getItem('userToken');
+                data = await getUserMedia(token);
+            }
             setMedia(data.reverse());
             setLoading(false);
         } catch (e) {
@@ -23,7 +31,7 @@ const List = (props) => {
     };
 
     useEffect(() => {
-        getMedia();
+        getMedia(props.mode);
     }, []);
 
     return (
@@ -37,15 +45,25 @@ const List = (props) => {
                     renderItem={({item}) => <ListItem
                         navigation={props.navigation}
                         singleMedia={item}
+                        mode={props.mode}
+                        getMedia={getMedia}
                     />}
                 />
             )}
+            <NavigationEvents
+                onDidBlur={() => {
+                    if(props.mode !== 'all') {
+                        getMedia('all');
+                    }
+                }}
+            />
         </View>
     );
 };
 
 List.propTypes = {
     navigation: PropTypes.object,
+    mode: PropTypes.string,
 };
 
 export default List;

@@ -1,4 +1,5 @@
 import {apiUrl} from '../constants/urlConst';
+import {AsyncStorage} from 'react-native';
 
 
 const fetchGET = async (endpoint = '', params = '', token = '') => {
@@ -65,4 +66,36 @@ const getAllMedia = async () => {
     return result;
 };
 
-export {getAllMedia, fetchGET, fetchPOST, fetchFormData};
+const getUserMedia = async (token) => {
+    const json = await fetchGET('media/user', '', token);
+    const result = await Promise.all(json.map(async (item) => {
+        return await fetchGET('media', item.file_id);
+    }));
+    return result;
+};
+
+const fetchDELETE = async (endpoint = '', params = '', token = '') => {
+    const fetchOptions = {
+        method: 'DELETE',
+        headers: {
+            'x-access-token': token,
+        },
+    };
+    const response = await fetch(apiUrl + endpoint + '/' + params,
+        fetchOptions);
+    if (!response.ok) {
+        throw new Error('fetchGET error: ' + response.status);
+    }
+    return await response.json();
+};
+
+const getUser = async (id) => {
+    try {
+        const token = await AsyncStorage.getItem('userToken');
+        return await fetchGET('users', id, token);
+    } catch (e) {
+        console.log(e.message);
+    }
+};
+
+export {getUser, getAllMedia, fetchGET, fetchPOST, fetchFormData, getUserMedia, fetchDELETE};

@@ -2,15 +2,15 @@ import React from 'react';
 import List from '../components/List';
 import PropTypes from 'prop-types';
 
-const Home = (props) => {
+const MyFiles = (props) => {
     const {navigation} = props;
     return (
-        <List navigation={navigation} mode={'all'}></List>
+        <List navigation={navigation} mode={'myFiles'}></List>
     );
 };
 
-Home.propTypes = {
+MyFiles.propTypes = {
     navigation: PropTypes.object,
 };
 
-export default Home;
+export default MyFiles;
